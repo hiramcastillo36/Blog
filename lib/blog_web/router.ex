@@ -20,6 +20,12 @@ defmodule BlogWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/api" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: Blog.Schema
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", BlogWeb do
   #   pipe_through :api
