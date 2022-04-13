@@ -1,0 +1,44 @@
+# Version of docker-compose
+version: '3'
+
+# Containers we are going to run
+services:
+  # Our Phoenix and ix2code container
+  phoenix:
+    build: .
+    stdin_open: true 
+    tty: true
+    volumes:
+      - .:/blog
+    ports:
+      # Mapping the port to make the Phoenix app accessible outside of the container
+      - "4000:4000"
+    
+  
+  react:
+    image: react:latest
+    ports:
+    - "3000:3000"
+    volumes:
+      - .:/blog
+  pg:
+    image: postgres
+    ports:
+    - "5432:5432"
+    environment:
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+        - PGADMIN_DEFAULT_EMAIL=admin@ixmatix.com
+        - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+        - "5555:80"
+    depends_on:
+        - pg
+
+  
+    
+  
